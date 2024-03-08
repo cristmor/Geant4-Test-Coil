@@ -1,0 +1,10 @@
+.vscode
+/data
+
+/sim/build
+/sim/CMakeFiles
+/sim/old
+/sim/cout.txt
+
+/ana/build
+/ana/*.png

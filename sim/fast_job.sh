@@ -1,0 +1,33 @@
+#!/bin/bash
+#SBATCH -J G4CoilFast
+#SBATCH -o %G4CoilTest.o%j
+#SBATCH -e %G4CoilTest.e%j
+#SBATCH -p nocona
+#SBATCH -N 1
+#SBATCH --ntasks-per-node=34
+
+# . ../../program/spack/share/spack/setup-env.sh
+# spack load root
+# spack load geant4
+
+. build.sh
+
+dir="fast"
+mkdir "$dir"
+
+cp models/G4CoilClad1.stl "$dir"
+cp models/G4CoilCore1.stl "$dir"
+cp models/G4FiberClad.stl "$dir"
+cp models/G4FiberCore.stl "$dir"
+cp "scripts/init_vis.mac" "$dir"
+cp "scripts/gui.mac" "$dir"
+cp "scripts/vis.mac" "$dir"
+cp "scripts/$dir.mac" "$dir"
+cp build/G4Coil "$dir"
+cd "$dir"
+mkdir data
+
+./G4Coil -m "$dir.mac" > ../cout.txt
+
+cd ..
+rm -rf "$dir"

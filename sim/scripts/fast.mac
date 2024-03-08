@@ -1,0 +1,19 @@
+#$$$ batchMode=0
+#$$$ particle=e-
+#$$$ nThreads=1
+#$$$ nEvents=100
+#$$$ energy=1
+
+#$$$ coilDensity=1
+#$$$ copperBlockSize=25.0
+
+#$$$ randomPosition=0
+#$$$ randomDirection=0
+
+#$$$ positionX=1.0
+#$$$ positionY=0.0
+#$$$ positionZ=0.0
+#$$$ directionX=0.0
+#$$$ directionY=0.0
+#$$$ directionZ=1.0
+#$$$ printNumber=100
