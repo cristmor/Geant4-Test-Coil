@@ -1,8 +1,8 @@
 #$$$ batchMode=0
-#$$$ particle=e-
+#$$$ particle=opticalphoton
 #$$$ nThreads=1
 #$$$ nEvents=100
-#$$$ energy=1
+#$$$ energy=0.01
 
 #$$$ coilDensity=1
 #$$$ copperBlockSize=25.0
@@ -10,10 +10,10 @@
 #$$$ randomPosition=0
 #$$$ randomDirection=0
 
-#$$$ positionX=1.0
-#$$$ positionY=0.0
-#$$$ positionZ=0.0
+#$$$ positionX=0.5
+#$$$ positionY=-0.09
+#$$$ positionZ=0.50
 #$$$ directionX=0.0
 #$$$ directionY=0.0
-#$$$ directionZ=1.0
+#$$$ directionZ=-1.0
 #$$$ printNumber=100

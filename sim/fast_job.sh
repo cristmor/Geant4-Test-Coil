@@ -15,10 +15,8 @@
 dir="fast"
 mkdir "$dir"
 
-cp models/G4CoilClad1.stl "$dir"
-cp models/G4CoilCore1.stl "$dir"
-cp models/G4FiberClad.stl "$dir"
-cp models/G4FiberCore.stl "$dir"
+cp models/clad.stl "$dir"
+cp models/core.stl "$dir"
 cp "scripts/init_vis.mac" "$dir"
 cp "scripts/gui.mac" "$dir"
 cp "scripts/vis.mac" "$dir"
