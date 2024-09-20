@@ -1,0 +1,16 @@
+To Do List:
+1.) make the data class, probably only use a .txt file for now
+  a.) add file object to be appended to
+
+2.) create batch mode for the mc
+  a.) create class to accept runtime parameters
+  b.) pass these parameters to the programs
+
+3.) make basic ana program
+
+4.) figure a different way to render the mc
+  a.) use opengl
+  b.) making rendering logic occur in a different threads
+  c.) use ImGui to control the mc with a basic user interface
+
+

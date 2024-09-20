@@ -25,6 +25,8 @@
 #include "G4Track.hh"
 #include "G4VProcess.hh"
 
+// Custom Headers
+#include "Data.hh"
 
 class Detector;
 class Event;
@@ -38,4 +40,5 @@ public:
 private:
     const Detector* fDetConstruction;
     Event*  fEventAction;
+    Data* fData;
 };

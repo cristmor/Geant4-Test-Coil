@@ -137,9 +137,9 @@ G4VPhysicalVolume* Detector::DefineVolumes()
     // World
     //
 
-    worldSizeX = 2.0*cm ;  // half width
-    worldSizeY = 2.0*cm ;  // half width
-    worldSizeZ = 2.0*cm ;  // half width
+    worldSizeX = 15.0*cm ;  // half width
+    worldSizeY = 15.0*cm ;  // half width
+    worldSizeZ = 15.0*cm ;  // half width
 
     auto worldS = new G4Box("World", worldSizeX/2, worldSizeY/2, worldSizeZ/2);
     auto worldLV = new G4LogicalVolume(worldS, defaultMaterial, "World");
@@ -161,33 +161,100 @@ G4VPhysicalVolume* Detector::DefineVolumes()
     // G4Coil
     //
 
-    auto coilClad = CADMesh::TessellatedMesh::FromSTL("clad.stl");
-    coilClad->SetScale(1000.0);
-    auto coilCladS = coilClad->GetSolid();
-    auto coilCladLV = new G4LogicalVolume(coilCladS, cladMaterial, "coilCladLV");
-    new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 0.0), coilCladLV, "coilCladPV", copperBlockLV, false, 0, fCheckOverlaps);
+    G4double displacement = 5.0*cm;
+    G4int coilCount = 7;
 
-    auto coilcore = CADMesh::TessellatedMesh::FromSTL("core.stl");
-    coilcore->SetScale(1000.0);
-    auto coilCoreS = coilcore->GetSolid();
-    auto coilCoreLV = new G4LogicalVolume(coilCoreS, coreMaterial, "coilCladLV");
-    new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 0.0), coilCoreLV, "coilCladPV", coilCladLV, false, 0, fCheckOverlaps);
+    std::vector<std::shared_ptr<CADMesh::TessellatedMesh>> coil;
+    std::vector<G4LogicalVolume*> coilVolume;
+
+    std::vector<std::shared_ptr<CADMesh::TessellatedMesh>> coilClad;
+    std::vector<G4LogicalVolume*> coilCladVolume;
+
+    for (int i = 1; i <= coilCount; i++) {
+        coilClad.push_back(CADMesh::TessellatedMesh::FromSTL("Coil" + std::to_string(i) + "_Clad.stl"));
+        auto coilCladS = coilClad[i-1]->GetSolid();
+        coilCladVolume.push_back(new G4LogicalVolume(coilCladS, cladMaterial, "coilCladLV"));
+        new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 0.0 - displacement), coilCladVolume[i-1], "coilCladPV", copperBlockLV, false, 0, fCheckOverlaps);        
+
+        coil.push_back(CADMesh::TessellatedMesh::FromSTL("Coil" + std::to_string(i) + ".stl"));
+        auto coilCoreS = coil[i-1]->GetSolid();
+        coilVolume.push_back(new G4LogicalVolume(coilCoreS, coreMaterial, "coilCladLV"));
+        new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 0.0 - displacement), coilVolume[i-1], "coilCorePV", copperBlockLV, false, 0, fCheckOverlaps);
+
+   }
+
+    G4int fiberCount = 6;
+
+    std::vector<std::shared_ptr<CADMesh::TessellatedMesh>> fiber;
+    std::vector<G4LogicalVolume*> fiberVolume;
+
+    std::vector<std::shared_ptr<CADMesh::TessellatedMesh>> fiberClad;
+    std::vector<G4LogicalVolume*> fiberCladVolume;
+
+    for (int i = 1; i <= fiberCount; i++) {
+        fiberClad.push_back(CADMesh::TessellatedMesh::FromSTL("Core" + std::to_string(i) + "_Clad.stl"));
+        auto fiberCladS = fiberClad[i-1]->GetSolid();
+        fiberCladVolume.push_back(new G4LogicalVolume(fiberCladS, cladMaterial, "fiberCladLV"));
+        new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 0.0 - displacement), fiberCladVolume[i-1], "fiberCladPV", copperBlockLV, false, 0, fCheckOverlaps);
+
+        fiber.push_back(CADMesh::TessellatedMesh::FromSTL("Core" + std::to_string(i) + ".stl"));
+        auto fiberCoreS = fiber[i-1]->GetSolid();
+        fiberVolume.push_back(new G4LogicalVolume(fiberCoreS, coreMaterial, "fiberCladLV"));
+        new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 0.0 - displacement), fiberVolume[i-1], "fiberCorePV", copperBlockLV, false, 0, fCheckOverlaps);
+
+    }
+
+
+    // auto coilCladS = coilClad->GetSolid();
+    // auto coilCladLV = new G4LogicalVolume(coilCladS, cladMaterial, "coilCladLV");
+    // new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 0.0 - coilDisplacement), coilCladLV, "coilCladPV", copperBlockLV, false, 0, fCheckOverlaps);
+
+
+    // auto coilCore = CADMesh::TessellatedMesh::FromSTL("Coil1_Clad.stl");
+    // auto coilCore = CADMesh::TessellatedMesh::FromSTL("Coil1_Clad.stl");
+    // auto coilCore = CADMesh::TessellatedMesh::FromSTL("Coil1_Clad.stl");
+    // auto coilCore = CADMesh::TessellatedMesh::FromSTL("Coil1_Clad.stl");
+    // auto coilCore = CADMesh::TessellatedMesh::FromSTL("Coil1_Clad.stl");
+    // auto coilCore = CADMesh::TessellatedMesh::FromSTL("Coil1_Clad.stl");
+    // auto coilCore = CADMesh::TessellatedMesh::FromSTL("Coil1_Clad.stl");
+
+    // auto coilCoreS = coilCore->GetSolid();
+    // auto coilCoreLV = new G4LogicalVolume(coilCoreS, coreMaterial, "coilCladLV");
+    // new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 0.0), coilCoreLV, "coilCladPV", coilCladLV, false, 0, fCheckOverlaps);
+
+    // auto coilClad = CADMesh::TessellatedMesh::FromSTL("Coil1.stl");
+    // auto coilCore = CADMesh::TessellatedMesh::FromSTL("Coil1_Clad.stl");
+
+    // G4int coilCount = 7;
+    // for(int i = 1; i < coilCount;i++) {
+    //     coilClad = CADMesh::TessellatedMesh::FromSTL("Coil"+std::to_string(i)+".stl");
+    //     coilClad->SetScale(1.0);
+    //     auto coilCladS = coilClad->GetSolid();
+    //     auto coilCladLV = new G4LogicalVolume(coilCladS, cladMaterial, "coilCladLV");
+    //     new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 0.0 - coilDisplacement), coilCladLV, "coilCladPV", copperBlockLV, false, i, fCheckOverlaps);
+
+    //     coilCore = CADMesh::TessellatedMesh::FromSTL("Coil"+std::to_string(i)+"_Clad.stl");
+    //     coilCore->SetScale(1.0);
+    //     auto coilCoreS = coilCore->GetSolid();
+    //     auto coilCoreLV = new G4LogicalVolume(coilCoreS, coreMaterial, "coilCladLV");
+    //     new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 0.0), coilCoreLV, "coilCladPV", coilCladLV, false, i, fCheckOverlaps);
+    // }
 
     //
     // Fiber
     //
 
-    G4double cladRadius = 0.5*mm;
-    G4double coreRadius = 0.45*mm;
-    G4double height = copperBlockZ;
+    // G4double cladRadius = 0.5*mm;
+    // G4double coreRadius = 0.45*mm;
+    // G4double height = copperBlockZ;
 
-    auto fiberCladS = new G4Tubs("fiberCladS", 0.0, cladRadius, height/2, 0.0, 2.0*M_PI);
-    auto fiberCladLV = new G4LogicalVolume(fiberCladS, cladMaterial, "fiberCladLV");
-    new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 0.0), fiberCladLV, "fiberCladPV", copperBlockLV, false, 0, fCheckOverlaps);
+    // auto fiberCladS = new G4Tubs("fiberCladS", 0.0, cladRadius, height/2, 0.0, 2.0*M_PI);
+    // auto fiberCladLV = new G4LogicalVolume(fiberCladS, cladMaterial, "fiberCladLV");
+    // new G4PVPlacement(0, G4ThreeVector(0.0, 0.0, 0.0), fiberCladLV, "fiberCladPV", copperBlockLV, false, 0, fCheckOverlaps);
 
-    auto fiberCoreS = new G4Tubs("fiberCoreS", 0.0, coreRadius, height/2, 0.0, 2.0*M_PI);
-    auto fiberCoreLV = new G4LogicalVolume( fiberCoreS, coreMaterial, "fiberCoreLV");
-    new G4PVPlacement(0, G4ThreeVector(0.0*mm, 0.0*mm, 0.0*mm), fiberCoreLV, "fiberCorePV", fiberCladLV, false, 0, fCheckOverlaps);
+    // auto fiberCoreS = new G4Tubs("fiberCoreS", 0.0, coreRadius, height/2, 0.0, 2.0*M_PI);
+    // auto fiberCoreLV = new G4LogicalVolume( fiberCoreS, coreMaterial, "fiberCoreLV");
+    // new G4PVPlacement(0, G4ThreeVector(0.0*mm, 0.0*mm, 0.0*mm), fiberCoreLV, "fiberCorePV", fiberCladLV, false, 0, fCheckOverlaps);
 
     //                                       
     // Visualization attributes
@@ -195,10 +262,18 @@ G4VPhysicalVolume* Detector::DefineVolumes()
 
     worldLV->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.0,0.0,1.0)));
     copperBlockLV->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.0,1.0,0.0)));
-    coilCladLV->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.5, 0.0, 0.5)));
-    coilCoreLV->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.0,0.0,1.0)));
-    fiberCladLV->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.5, 0.0, 0.5)));
-    fiberCoreLV->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.0,0.0,1.0)));
+    for(int i = 1; i <= coilCount;i++) {
+        coilVolume[i-1]->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.5, 0.0, 0.5)));
+        coilCladVolume[i-1]->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.0,0.0,1.0)));
+    }
+    for(int i = 1; i <= fiberCount;i++) {
+        fiberVolume[i-1]->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.5, 0.0, 0.5)));
+        fiberCladVolume[i-1]->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.0,0.0,1.0)));
+    }
+    // coilCladLV->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.5, 0.0, 0.5)));
+    // coilCoreLV->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.0,0.0,1.0)));
+    // fiberCladLV->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.5, 0.0, 0.5)));
+    // fiberCoreLV->SetVisAttributes(new G4VisAttributes(TRUE,G4Colour(0.0,0.0,1.0)));
 
     //
     // Always return the physical World

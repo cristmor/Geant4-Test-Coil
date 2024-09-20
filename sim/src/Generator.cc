@@ -9,13 +9,13 @@ Generator::Generator()
     fParticleGun->SetParticleDefinition(particleDefinition);
     fParticleGun->SetParticleEnergy(100.0*keV);
 
-    G4double startX = 0.5*cm;
-    G4double startY = -0.09*cm;
-    G4double startZ = 0.50*cm;
+    G4double startX = 0*cm;
+    G4double startY = 0*cm;
+    G4double startZ = 0*cm;
 
     G4double px = 0.0;
-    G4double py = 0;
-    G4double pz = -1.0;
+    G4double py = 0.05;
+    G4double pz = -0.95;
 
     fParticleGun->SetParticlePosition(G4ThreeVector(startX, startY, startZ));
     fParticleGun->SetParticleMomentumDirection(G4ThreeVector(px, py, pz));

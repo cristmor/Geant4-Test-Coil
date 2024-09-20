@@ -1,19 +1,2 @@
-#$$$ batchMode=0
-#$$$ particle=opticalphoton
-#$$$ nThreads=1
-#$$$ nEvents=100
-#$$$ energy=0.01
-
-#$$$ coilDensity=1
-#$$$ copperBlockSize=25.0
-
-#$$$ randomPosition=0
-#$$$ randomDirection=0
-
-#$$$ positionX=0.5
-#$$$ positionY=-0.09
-#$$$ positionZ=0.50
-#$$$ directionX=0.0
-#$$$ directionY=0.0
-#$$$ directionZ=-1.0
-#$$$ printNumber=100
+particleName e-
+events 10

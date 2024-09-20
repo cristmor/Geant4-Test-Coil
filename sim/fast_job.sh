@@ -15,8 +15,7 @@
 dir="fast"
 mkdir "$dir"
 
-cp models/clad.stl "$dir"
-cp models/core.stl "$dir"
+cp models/*.stl "$dir"
 cp "scripts/init_vis.mac" "$dir"
 cp "scripts/gui.mac" "$dir"
 cp "scripts/vis.mac" "$dir"
@@ -26,6 +25,7 @@ cd "$dir"
 mkdir data
 
 ./G4Coil -m "$dir.mac" > ../cout.txt
+cp test.txt ..
 
 cd ..
 rm -rf "$dir"
