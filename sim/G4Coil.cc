@@ -71,6 +71,9 @@ int main(int argc, char **argv) {
   std::shared_ptr<ConfigLoader> config =
       std::make_shared<ConfigLoader>("fast.mac");
 
+  G4long seed = static_cast<G4long>(std::time(nullptr));
+    G4Random::setTheSeed(seed);
+
   // Set mandatory initialization classes
   //
   auto detConstruction = new Detector();
@@ -97,11 +100,9 @@ int main(int argc, char **argv) {
   //
   auto parameters = config->getParameters();
   std::cout << "/run/beamOn " + std::to_string(parameters.events) << std::endl;
-  if (config) {
+  if (false) {
     // batch mode
     UImanager->ApplyCommand("/run/initialize");
-    UImanager->ApplyCommand("/event/verbose 0");
-    UImanager->ApplyCommand("/run/verbose 0");
     UImanager->ApplyCommand("/run/beamOn " + std::to_string(parameters.events));
   } else {
     // interactive mode : define UI session

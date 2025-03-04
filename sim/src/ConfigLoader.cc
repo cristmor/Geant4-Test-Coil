@@ -2,6 +2,7 @@
 
 ConfigLoader::ConfigLoader(const std::string& fileName) {
     fMacfile.open(fileName);
+    loadFromFile();
 }
 
 ConfigLoader::~ConfigLoader() {
@@ -9,13 +10,12 @@ ConfigLoader::~ConfigLoader() {
 }
 
 // public
-const Parameters ConfigLoader::getParameters() const {
+const Parameters& ConfigLoader::getParameters() const {
     return fParameter;
 }
 
 // private
 void ConfigLoader::loadFromFile() {
-
     while(fMacfile.good()) {
         std::string str;
         fMacfile >> str;

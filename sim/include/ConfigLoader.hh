@@ -15,7 +15,7 @@ public:
   ConfigLoader(const std::string& fileName);
   ~ConfigLoader();
 
-  const Parameters getParameters() const;
+  const Parameters& getParameters() const;
 
 private:
   void loadFromFile();
